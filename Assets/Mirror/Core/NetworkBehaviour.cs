@@ -304,7 +304,6 @@ namespace Mirror
             // GetComponentInParent(includeInactive) is needed because Prefabs are not
             // considered active, so this check requires to scan inactive.
 #if UNITY_EDITOR
-#if UNITY_2021_3_OR_NEWER // 2021 has GetComponentInParents(active)
             if (GetComponent<NetworkIdentity>() == null &&
                 GetComponentInParent<NetworkIdentity>(true) == null)
             {
@@ -317,7 +316,6 @@ namespace Mirror
             {
                 Debug.LogError($"{GetType()} on {name} requires a NetworkIdentity. Please add a NetworkIdentity component to {name} or it's parents.");
             }
-#endif
 #endif
         }
 

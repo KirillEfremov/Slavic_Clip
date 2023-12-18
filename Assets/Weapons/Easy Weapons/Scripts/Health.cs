@@ -40,6 +40,7 @@ namespace Builds
             }
         }
 
+
         public void ChangeHealth(int amount)
 		{
 			// Change the health by the amount specified in the amount variable

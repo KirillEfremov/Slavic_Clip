@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Mirror;
 
 namespace Builds
 {
@@ -7,8 +8,8 @@ namespace Builds
     {
         public bool _isPlayedWin = true;
         public string _labelText = "Возьмите с землице русской шесть вещиц, чтобы супостатов бить или найдите символ величия государства православного, совершив, во Славу памяти места священного, славянский зажим ящерам перевоплотившимся!";
+
         private int maxBunner = 1;
-       
         private int _bunnerCollected = 0;
         private int _weaponsCollected = 0;
 
