@@ -1,4 +1,5 @@
 using UnityEngine;
+using Mirror;
 
 namespace Builds
 {
@@ -13,7 +14,7 @@ namespace Builds
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-        
+        [Client]
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))

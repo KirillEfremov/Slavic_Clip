@@ -17,6 +17,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 
 namespace Builds
 {
@@ -319,8 +320,9 @@ namespace Builds
 			}
 		}
 
-		// Checks for user input to use the weapons - only if this weapon is player-controlled
-		void CheckForUserInput()
+        // Checks for user input to use the weapons - only if this weapon is player-controlled
+        [Client]
+        void CheckForUserInput()
 		{
 
 			// Fire if this is a raycast type weapon and the user presses the fire button
@@ -423,14 +425,16 @@ namespace Builds
 				canFire = true;
 		}
 
-		// A public method that causes the weapon to fire - can be called from other scripts - calls AI Firing for now
-		public void RemoteFire()
+        // A public method that causes the weapon to fire - can be called from other scripts - calls AI Firing for now
+        [Client]
+        public void RemoteFire()
 		{
 			AIFiring();
 		}
 
-		// Determines when the AI can be firing
-		public void AIFiring()
+        // Determines when the AI can be firing
+        [Client]
+        public void AIFiring()
 		{
 
 			// Fire if this is a raycast type weapon
@@ -524,8 +528,8 @@ namespace Builds
 			Beam();
 		}
 
-
-		void OnGUI()
+        [Client]
+        void OnGUI()
 		{
 
 			// Crosshairs
@@ -564,8 +568,9 @@ namespace Builds
 		}
 
 
-		// Raycasting system
-		void Fire()
+        // Raycasting system
+        [Client]
+        void Fire()
 		{
 			// Reset the fireTimer to 0 (for ROF)
 			fireTimer = 0.0f;
@@ -805,8 +810,9 @@ namespace Builds
 			GetComponent<AudioSource>().PlayOneShot(fireSound);
 		}
 
-		// Projectile system
-		public void Launch()
+        // Projectile system
+        [Client]
+        public void Launch()
 		{
 			// Reset the fire timer to 0 (for ROF)
 			fireTimer = 0.0f;
@@ -878,8 +884,9 @@ namespace Builds
 			GetComponent<AudioSource>().PlayOneShot(fireSound);
 		}
 
-		// Beam system
-		void Beam()
+        // Beam system
+        [Client]
+        void Beam()
 		{
 			// Send a messsage so that users can do other actions whenever this happens
 			SendMessageUpwards("OnEasyWeaponsBeaming", SendMessageOptions.DontRequireReceiver);
@@ -1036,8 +1043,8 @@ namespace Builds
 				GetComponent<AudioSource>().Play();
 			}
 		}
-
-		public void StopBeam()
+        [Client]
+        public void StopBeam()
 		{
 			// Restart the beam timer
 			beamHeat -= Time.deltaTime;
@@ -1056,8 +1063,9 @@ namespace Builds
 		}
 
 
-		// Reload the weapon
-		void Reload()
+        // Reload the weapon
+        [Client]
+        void Reload()
 		{
 			currentAmmo = ammoCapacity;
 			fireTimer = -reloadTime;
@@ -1067,15 +1075,17 @@ namespace Builds
 			SendMessageUpwards("OnEasyWeaponsReload", SendMessageOptions.DontRequireReceiver);
 		}
 
-		// When the weapon tries to fire without any ammo
-		void DryFire()
+        // When the weapon tries to fire without any ammo
+        [Client]
+        void DryFire()
 		{
 			GetComponent<AudioSource>().PlayOneShot(dryFireSound);
 		}
 
 
-		// Recoil FX.  This is the "kick" that you see when the weapon moves back while firing
-		void Recoil()
+        // Recoil FX.  This is the "kick" that you see when the weapon moves back while firing
+        [Client]
+        void Recoil()
 		{
 			// No recoil for AIs
 			if (!playerWeapon)
@@ -1097,8 +1107,9 @@ namespace Builds
 			weaponModel.transform.Rotate(new Vector3(-kickRot, 0, 0), Space.Self);
 		}
 
-		// Find a mesh renderer in a specified gameobject, it's children, or its parents
-		MeshRenderer FindMeshRenderer(GameObject go)
+        // Find a mesh renderer in a specified gameobject, it's children, or its parents
+        [Client]
+        MeshRenderer FindMeshRenderer(GameObject go)
 		{
 			MeshRenderer hitMesh;
 

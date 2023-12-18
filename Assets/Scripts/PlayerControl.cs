@@ -1,56 +1,56 @@
 using UnityEngine;
+using Mirror;
 
 namespace Builds
 {
     [RequireComponent(typeof(PlayerMotor))]
     public class PlayerControl : MonoBehaviour
     {
-        private Animator anim;
+        private Animator _anim;
         public float _speed = 5f;
         [SerializeField]
         private float _lookspeed = 3f;
-
         private PlayerMotor _motor;
-
-        public AudioClip itemClip;
-        public AudioClip death;
-        private AudioSource audioSource;
+        public AudioClip _itemClip;
+        public AudioClip _death;
+        private AudioSource _audioSource;
 
 
         private void Start()
         {
-            anim = GetComponent<Animator>();
+            _anim = GetComponent<Animator>();
             _motor = GetComponent<PlayerMotor>();
-            audioSource = GetComponent<AudioSource>();
+            _audioSource = GetComponent<AudioSource>();
         }
         void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.name == "Rail Gun")
             {
-                audioSource.PlayOneShot(itemClip);
+                _audioSource.PlayOneShot(_itemClip);
             }
             if (collision.gameObject.name == "Shotgun")
             {
-                audioSource.PlayOneShot(itemClip);
+                _audioSource.PlayOneShot(_itemClip);
             }
             if (collision.gameObject.name == "Beam Gun")
             {
-                audioSource.PlayOneShot(itemClip);
+                _audioSource.PlayOneShot(_itemClip);
             }
             if (collision.gameObject.name == "M4")
             {
-                audioSource.PlayOneShot(itemClip);
+                _audioSource.PlayOneShot(_itemClip);
             }
             if (collision.gameObject.name == "Pistol")
             {
-                audioSource.PlayOneShot(itemClip);
+                _audioSource.PlayOneShot(_itemClip);
             }
             if (collision.gameObject.name == "Rocket Launcher")
             {
-                audioSource.PlayOneShot(itemClip);
+                _audioSource.PlayOneShot(_itemClip);
             }
         }
 
+        [Client]
         private void Update()
         {
             float xMove = Input.GetAxisRaw("Horizontal");
@@ -73,13 +73,13 @@ namespace Builds
 
             if (Input.GetKey(KeyCode.W) && (Input.GetKey(KeyCode.LeftShift)))
             {
-                anim.SetBool("isFastRunning", true);
+                _anim.SetBool("isFastRunning", true);
                 _speed = 10f;
             }
 
             else
             {
-                anim.SetBool("isFastRunning", false);
+                _anim.SetBool("isFastRunning", false);
                 _speed = 5f;
             }
 

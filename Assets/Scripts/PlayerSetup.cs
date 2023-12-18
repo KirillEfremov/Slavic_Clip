@@ -8,6 +8,8 @@ namespace Builds
         private Camera _sceneCamera;
         [SerializeField]
         Behaviour[] componentsToDisable;
+        [SerializeField]
+        private string remotePlayer = "RemotePlayer";
 
         private void Start()
         {
@@ -19,7 +21,16 @@ namespace Builds
                 _sceneCamera = Camera.main;
                 if (_sceneCamera != null)
                     _sceneCamera.gameObject.SetActive(false);
+                gameObject.layer = LayerMask.NameToLayer(remotePlayer);
             }
+
+            RegisterPlayer();
+        }
+
+        void RegisterPlayer()
+        {
+            string _ID = "Player" + GetComponent<NetworkIdentity>().netId;
+            transform.name = _ID;
         }
 
         private void OnDisable()

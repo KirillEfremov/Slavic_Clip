@@ -8,7 +8,6 @@ public class PlayerMotor : MonoBehaviour
     private Rigidbody _rb;
     private Vector3 _velocity = Vector3.zero;
     private Vector3 _rotation = Vector3.zero;
-    private Vector3 _rotationCamera = Vector3.zero;
 
     private void Start()
     {

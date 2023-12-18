@@ -8,8 +8,7 @@ namespace Builds
         private Animator _anim;
         private bool _animBool;
         private string _text;
-        [SerializeField]
-        private Health currentHealth;
+        private Health _currentHealth;
         private bool _isTrig;
         [SerializeField]
         private AudioSource _buff;
@@ -48,7 +47,7 @@ namespace Builds
                     _animBool = true;
                     if (_animBool)
                     {
-                        currentHealth.CurrentHealth = 1000;
+                        _currentHealth.CurrentHealth = 1000;
                         _buff.Play();
                     }
                 }

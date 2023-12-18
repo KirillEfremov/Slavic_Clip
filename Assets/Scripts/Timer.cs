@@ -6,61 +6,72 @@ namespace Builds
 {
     public class Timer : MonoBehaviour
     {
-        private bool showLossScreen = false;
-        private bool isPlayedLoss = true;
+        private bool _showLossScreen = false;
+        private bool _isPlayedLoss = true;
         [SerializeField]
-        private float timerStart = 300f;
+        private float _timerStart = 300f;
         [SerializeField]
-        private Text timerText;
-        private GameBehaviour Text;
+        private Text _timerText;
+        private GameBehaviour _text;
         private GameObject BG;
-        public AudioSource gameOver;
-        private GameBehaviour isPlayedWin;
-        private GameBehaviour showWinScreen;
+        public AudioSource _gameOver;
+        private GameBehaviour _isPlayedWin;
+        private GameBehaviour _showWinScreen;
         [SerializeField]
-        private Button _buttonLoss;
+        private GameObject _player1;
+        [SerializeField]
+        private GameObject _player2;
+
 
         private void Start()
         {
-            timerText.text = timerStart.ToString();
-            Text = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
+            _timerText.text = _timerStart.ToString();
+            _text = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
             BG = GameObject.Find("BG");
-            isPlayedWin = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
-            showWinScreen = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
+            _isPlayedWin = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
+            _showWinScreen = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
+            _player1 = GameObject.Find("Player1");
+            _player2 = GameObject.Find("Player2");
         }
 
         private void Update()
         {
-            timerStart -= Time.deltaTime;
-            timerText.text = Mathf.Round(timerStart).ToString();
-            if (timerStart <= 0)
+            if (_player1 = GameObject.Find("Player1"))
             {
-                showLossScreen = true;
-                BG.SetActive(false);
-                Time.timeScale = 0f;      
-            }
+                if (_player2 = GameObject.Find("Player2"))
+               {
+                    _timerStart -= Time.deltaTime;
+                    _timerText.text = Mathf.Round(_timerStart).ToString();
+                    if (_timerStart <= 0)
+                    {
+                        _showLossScreen = true;
+                        BG.SetActive(false);
+                        Time.timeScale = 0f;
+                    }
 
-            if (showWinScreen.showWinScreen == true)
-                if (isPlayedWin.isPlayedWin == false)
-                    BG.SetActive(false);
+                    if (_showWinScreen._showWinScreen == true)
+                        if (_isPlayedWin._isPlayedWin == false)
+                            BG.SetActive(false);
+                }
+            }
         }        
 
         private void OnGUI()
         {
-            if (showLossScreen)
+            if (_showLossScreen)
             {
-                if (isPlayedLoss)
+                if (_isPlayedLoss)
                 {
-                    gameOver.Play();
+                    _gameOver.Play();
                 }
-                Text.labelText = "Пространство времени лопнуло!";
+                _text._labelText = "Пространство времени лопнуло!";
                 if (GUI.Button(new Rect(Screen.width / 2 - 250,
                 Screen.height / 2 - 50, 400, 100), "НУ КАК ЖЕ ТАК, БОГАТЫРЬ!"))
                 {
                     SceneManager.LoadScene(0);
                     Time.timeScale = 1.0f;
                 }
-                isPlayedLoss = false;
+                _isPlayedLoss = false;
             }
         }
        

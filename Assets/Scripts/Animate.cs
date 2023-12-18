@@ -13,13 +13,13 @@ namespace Builds
         private AudioSource _gameOver;
         private bool _isPlayedDie = true;
         private bool _showLossScreen = false;
-        private GameBehaviour Text;
+        private GameBehaviour _text;
 
         private void Start()
         {
             _anim = GetComponent<Animator>();
             BG = GameObject.Find("BG");
-            Text = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
+            _text = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
         }
 
         private void Update()
@@ -87,7 +87,7 @@ namespace Builds
                 {
                     _gameOver.Play();
                 }
-                Text.labelText = "Бесконечно-вечное близко!";
+                _text._labelText = "Бесконечно-вечное близко!";
                 if (GUI.Button(new Rect(Screen.width / 2 - 250,
                 Screen.height / 2 - 50, 400, 100), "НУ КАК ЖЕ ТАК, БОГАТЫРЬ!"))
                 {

@@ -3,29 +3,16 @@ namespace Builds
 {
     public class WeaponsBehaviour : MonoBehaviour
     {
-        private GameBehaviour gameManager;
-        void Start()
+        private GameBehaviour _weapons;
+
+        private void Start()
         {
-            gameManager = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
+            _weapons = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
         }
+
         void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.name == "Player [connId=0]")
-            {
-                DestroyMethod();
-            }
-
-            if (collision.gameObject.name == "Player [connId=1]")
-            {
-                DestroyMethod();
-            }
-
-            if (collision.gameObject.name == "Player [connId=2]")
-            {
-                DestroyMethod();
-            }
-
-            if (collision.gameObject.name == "Player [connId=3]")
+            if (collision.gameObject.tag == "Player")
             {
                 DestroyMethod();
             }
@@ -35,7 +22,7 @@ namespace Builds
         {
             Destroy(transform.gameObject);
             Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-            gameManager.Weapons += 1;
+            _weapons.Weapons += 1;
         }
     }
 }
