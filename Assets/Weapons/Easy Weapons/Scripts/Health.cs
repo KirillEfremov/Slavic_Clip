@@ -1,67 +1,51 @@
 ﻿using System.Collections;
 using UnityEngine;
-using Mirror;
 
 namespace Builds
 {
-	public class Health : NetworkBehaviour
+	public class Health : MonoBehaviour
 	{
-		public bool _canDie = true;                  
-
-        private int _startingHealth = 1000;       
+		public bool _canDie = true;                      
         private int _maxHealth = 1000;
-        [SyncVar]                               
-        private int _currentHealth;                
-
-		public bool _replaceWhenDead = false;        
+		private PlayerControl _currentHealth;
+        public bool _replaceWhenDead = false;        
 		public GameObject _deadReplacement;          
 		public bool _makeExplosion = false;          
 		public GameObject _explosion;                
-
 		public bool _isPlayer = false;               
 		public GameObject _deathCam;                 
-
 		private bool dead = false;                  
-		private Animate _lossScreen;
+		private PlayerControl _lossScreen;
 		private bool _lossTrue;
-       
+        private PlayerControl _showLossScreen;
+
         void Start()
-		{
-			_currentHealth = _startingHealth;
-			_lossScreen = GetComponent<Animate>();  
+		{		
+			_lossScreen = GetComponent<PlayerControl>();  
+			_currentHealth = GetComponent<PlayerControl>();
+            _showLossScreen = GetComponent<PlayerControl>();
         }
-
-        public int CurrentHealth
-        {
-            get { return _currentHealth; }
-            set
-            {
-                _currentHealth = value;
-            }
-        }
-
 
         public void ChangeHealth(int amount)
 		{
-			// Change the health by the amount specified in the amount variable
-			_currentHealth += amount;
+            // Измените текеущее здоровье на величину, указанную в переменной amount
+            _currentHealth.CurrentHealth += amount;
 
-			// If the health runs out, then Die.
-			if (_currentHealth <= 0 && !dead && _canDie)
+            // Если здоровье иссякнет, то умрешь
+            if (_currentHealth.CurrentHealth <= 0 && !dead && _canDie)
 				Die();
 
-			// Make sure that the health never exceeds the maximum health
-			else if (_currentHealth > _maxHealth)
-				_currentHealth = _maxHealth;
+            // Убедитесь, что запас здоровья никогда не превышает максимального значения
+            else if (_currentHealth.CurrentHealth > _maxHealth)
+				_currentHealth.CurrentHealth = _maxHealth;
 		}
-
 		public void Die()
 		{
-			// This GameObject is officially dead.  This is used to make sure the Die() function isn't called again
-			dead = true;
+            // Этот игровой объект официально мертв. Это используется для того, чтобы убедиться, что функция Die() больше не вызывается
+            dead = true;
 
-			// Make death effects
-			if (_replaceWhenDead)
+            // Создавать смертельные эффекты
+            if (_replaceWhenDead)
 				Instantiate(_deadReplacement, transform.position, transform.rotation);
 			if (_makeExplosion)
 				Instantiate(_explosion, transform.position, transform.rotation);
@@ -78,14 +62,14 @@ namespace Builds
             myStyle.fontStyle = FontStyle.Bold;
             myStyle.normal.textColor = Color.white;
             GUI.Box(new Rect(1350, 25, 250, 50),
-            "Силушка богатырская:" + _currentHealth, myStyle);
+            "Силушка богатырская:" + _currentHealth.CurrentHealth, myStyle);
             if (_lossTrue)
 			{
+                _showLossScreen._showLossScreen = true;
                 StartCoroutine(BadEnd());
                 _lossScreen.LossScreen();
             }
         }
-
 		IEnumerator BadEnd()
 		{
 			if (_lossTrue)

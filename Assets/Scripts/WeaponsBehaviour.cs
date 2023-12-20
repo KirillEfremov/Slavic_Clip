@@ -3,21 +3,17 @@ namespace Builds
 {
     public class WeaponsBehaviour : MonoBehaviour
     {
-        private GameBehaviour _weapons;
-
-        private void Start()
-        {
-            _weapons = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
-        }
+        [SerializeField]
+        private PlayerControl _weapons;
 
         void OnCollisionEnter(Collision collision)
         {
+            _weapons = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
             if (collision.gameObject.tag == "Player")
             {
                 DestroyMethod();
             }
-        }
-
+        }       
         public void DestroyMethod()
         {
             Destroy(transform.gameObject);

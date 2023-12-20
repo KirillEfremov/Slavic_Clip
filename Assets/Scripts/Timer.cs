@@ -12,24 +12,23 @@ namespace Builds
         private float _timerStart = 300f;
         [SerializeField]
         private Text _timerText;
-        private GameBehaviour _text;
-        private GameObject BG;
+        private PlayerControl _text;
+        private GameObject _BG;
         public AudioSource _gameOver;
-        private GameBehaviour _isPlayedWin;
-        private GameBehaviour _showWinScreen;
+        private PlayerControl _isPlayedWin;
+        private PlayerControl _showWinScreen;
         [SerializeField]
         private GameObject _player1;
         [SerializeField]
         private GameObject _player2;
 
-
         private void Start()
         {
             _timerText.text = _timerStart.ToString();
-            _text = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
-            BG = GameObject.Find("BG");
-            _isPlayedWin = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
-            _showWinScreen = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
+            _text = GetComponent<PlayerControl>();
+            _BG = GameObject.Find("BG");
+            _isPlayedWin = GetComponent<PlayerControl>();
+            _showWinScreen = GetComponent<PlayerControl>();
             _player1 = GameObject.Find("Player1");
             _player2 = GameObject.Find("Player2");
         }
@@ -45,17 +44,16 @@ namespace Builds
                     if (_timerStart <= 0)
                     {
                         _showLossScreen = true;
-                        BG.SetActive(false);
+                        _BG.SetActive(false);
                         Time.timeScale = 0f;
                     }
 
                     if (_showWinScreen._showWinScreen == true)
                         if (_isPlayedWin._isPlayedWin == false)
-                            BG.SetActive(false);
+                            _BG.SetActive(false);
                 }
             }
         }        
-
         private void OnGUI()
         {
             if (_showLossScreen)
@@ -74,7 +72,5 @@ namespace Builds
                 _isPlayedLoss = false;
             }
         }
-       
-
     }
 }

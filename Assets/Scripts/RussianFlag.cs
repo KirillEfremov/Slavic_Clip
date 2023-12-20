@@ -5,23 +5,20 @@ namespace Builds
 
     public class RussianFlag : MonoBehaviour
     {
-        private Animator _anim;
+        private Animate _anim;
         private bool _animBool;
         private string _text;
-        private Health _currentHealth;
+        private PlayerControl _currentHealth;
         private bool _isTrig;
         [SerializeField]
         private AudioSource _buff;
 
-        private void Start()
-        {
-            _anim = GetComponent<Animator>();
-        }
-
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.name == "Russian flag")
+            if (other.gameObject.tag == "Player")
             {
+                _anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animate>();
+                _currentHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
                 _text = "Остановись, путник, и нажми клавишу F заморскую. Получишь силушку богатырскую!";
                 _isTrig = true;
             }
@@ -34,8 +31,8 @@ namespace Builds
 
         private void OnTriggerExit(Collider other)
         {
-                _text = "";
-                _isTrig = false;
+             _text = "";
+             _isTrig = false;
         }
 
         private void Update()
@@ -43,7 +40,7 @@ namespace Builds
             if (_isTrig)
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    _anim.SetBool("isBuff", true);
+                    _anim._anim.SetBool("isBuff", true);
                     _animBool = true;
                     if (_animBool)
                     {
@@ -53,7 +50,7 @@ namespace Builds
                 }
                 else
                 {
-                    _anim.SetBool("isBuff", false);
+                    _anim._anim.SetBool("isBuff", false);
                     _animBool = false;
                 }     
         }
