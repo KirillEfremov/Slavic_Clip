@@ -1,5 +1,4 @@
 using UnityEngine;
-using Mirror;
 
 namespace Builds
 {
@@ -8,13 +7,10 @@ namespace Builds
         public float _mouseSens = 300f;
         public Transform _playerBody;
         float _xRotation = 0f;
-
-
         private void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-        [Client]
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))

@@ -7,7 +7,6 @@ namespace Builds
     [RequireComponent(typeof(PlayerMotor))]
     public class PlayerControl : NetworkBehaviour
     {
-        [SyncVar]
         public string _labelText = "Возьмите с землице русской шесть вещиц, чтобы супостатов бить или найдите символ величия государства православного, совершив, во Славу памяти места священного, славянский зажим ящерам перевоплотившимся!";
         private Animate _anim;
         public float _speed = 5f;
@@ -18,16 +17,13 @@ namespace Builds
         public AudioClip _death;
         private AudioSource _audioSource;
         private int _startingHealth = 1000;
-        [SyncVar]
         private int _currentHealth;
         private int _maxBunner = 1;
-        [SyncVar]
         private int _bunnerCollected = 0;
         public bool _showWinScreen = false;
         public bool _isPlayedWin = true;
         [SerializeField]
         private AudioSource _gameWin;
-        [SyncVar]
         private int _weaponsCollected = 0;
         private int _maxItems = 6;
         private GameObject _BG;
