@@ -8,9 +8,9 @@ namespace Builds
 
         void OnCollisionEnter(Collision collision)
         {
-            _weapons = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
             if (collision.gameObject.tag == "Player")
             {
+                _weapons = collision.gameObject.GetComponent<PlayerControl>();
                 DestroyMethod();
             }
         }       

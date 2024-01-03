@@ -10,7 +10,7 @@ namespace Builds
         {
             if (collision.gameObject.tag == "Player")
             {
-                _bunnerCollected = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
+                _bunnerCollected = collision.gameObject.GetComponent<PlayerControl>();
                 Destroy(this.transform.parent.gameObject);
                 Debug.Log("A sacred symbol has been found!");
                 _bunnerCollected.Bunner += 1;

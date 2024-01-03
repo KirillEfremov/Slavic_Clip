@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Mirror;
 
 namespace Builds
 {
-	public class Health : MonoBehaviour
+	public class Health : NetworkBehaviour
 	{
 		public bool _canDie = true;                      
         private int _maxHealth = 1000;
@@ -13,7 +14,7 @@ namespace Builds
 		public bool _makeExplosion = false;          
 		public GameObject _explosion;                
 		public bool _isPlayer = false;               
-		public GameObject _deathCam;                 
+		public GameObject _deathCam;
 		private bool dead = false;                  
 		private PlayerControl _lossScreen;
 		private bool _lossTrue;
@@ -26,20 +27,30 @@ namespace Builds
             _showLossScreen = GetComponent<PlayerControl>();
         }
 
-        public void ChangeHealth(int amount)
+        [Command(requiresAuthority = false)]
+        private void ChangeHealth(int amount)
+        {
+            RpcChangeHealth(amount);
+        }
+
+        [ClientRpc]
+        public void RpcChangeHealth(int amount)
 		{
             // Измените текеущее здоровье на величину, указанную в переменной amount
             _currentHealth.CurrentHealth += amount;
 
             // Если здоровье иссякнет, то умрешь
             if (_currentHealth.CurrentHealth <= 0 && !dead && _canDie)
-				Die();
+            {
+                Die();
+            }
 
             // Убедитесь, что запас здоровья никогда не превышает максимального значения
             else if (_currentHealth.CurrentHealth > _maxHealth)
-				_currentHealth.CurrentHealth = _maxHealth;
+                _currentHealth.CurrentHealth = _maxHealth;
 		}
-		public void Die()
+
+        public void Die()
 		{
             // Этот игровой объект официально мертв. Это используется для того, чтобы убедиться, что функция Die() больше не вызывается
             dead = true;

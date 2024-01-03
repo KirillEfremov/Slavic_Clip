@@ -26,7 +26,7 @@ namespace Builds
         private AudioSource _gameWin;
         private int _weaponsCollected = 0;
         private int _maxItems = 6;
-        private GameObject _BG;
+        public GameObject _BG;
         [SerializeField]
         private AudioSource _gameOver;
         private bool _isPlayedDie = true;
@@ -40,8 +40,11 @@ namespace Builds
             _motor = GetComponent<PlayerMotor>();
             _audioSource = GetComponent<AudioSource>();
             _currentHealth = _startingHealth;
-            _BG = GameObject.Find("BG");
             _player = GameObject.FindWithTag("Player");
+            if (isLocalPlayer)
+            {
+                _BG.SetActive(true);
+            }
         }
 
         //звуковой эффект при столкновении с оружием
@@ -50,26 +53,38 @@ namespace Builds
             if (collision.gameObject.name == "Rail Gun")
             {
                 _audioSource.PlayOneShot(_itemClip);
+                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
+                Weapons += 1;
             }
             if (collision.gameObject.name == "Shotgun")
             {
                 _audioSource.PlayOneShot(_itemClip);
+                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
+                Weapons += 1;
             }
             if (collision.gameObject.name == "Beam Gun")
             {
                 _audioSource.PlayOneShot(_itemClip);
+                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
+                Weapons += 1;
             }
             if (collision.gameObject.name == "M4")
             {
                 _audioSource.PlayOneShot(_itemClip);
+                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
+                Weapons += 1;
             }
             if (collision.gameObject.name == "Pistol")
             {
                 _audioSource.PlayOneShot(_itemClip);
+                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
+                Weapons += 1;
             }
             if (collision.gameObject.name == "Rocket Launcher")
             {
                 _audioSource.PlayOneShot(_itemClip);
+                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
+                Weapons += 1;
             }
         }
         private void Update()
@@ -142,6 +157,7 @@ namespace Builds
         {
             _showWinScreen = true;
             Time.timeScale = 0f;
+            GetComponent<SetGunsIntoCamera>().DisableFireGun();
         }
         //нашел герб - выиграл
         private void BunnerWin()
@@ -195,7 +211,7 @@ namespace Builds
         //упал - проиграл
         private void LossFell()
         {
-            if (_player.transform.position.y <= -20)
+            if (_player.transform.position.y <= -20 || gameObject.transform.position.y <= -20)
             {
                 _showLossScreen = true;
                 if (_player.transform.position.y <= -120)

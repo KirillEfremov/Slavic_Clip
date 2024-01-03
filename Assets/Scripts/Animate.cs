@@ -1,8 +1,9 @@
 using UnityEngine;
+using Mirror;
 
 namespace Builds
 {
-    public class Animate : MonoBehaviour
+    public class Animate : NetworkBehaviour
     {
         public Animator _anim;
         

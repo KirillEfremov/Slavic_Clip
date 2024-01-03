@@ -17,7 +17,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Networking.Types;
+using UnityEngine.Networking;
+using Mirror;
 
 namespace Builds
 {
@@ -65,7 +66,7 @@ namespace Builds
 	}
 
     // Класс оружия сам управляет механикой оружия
-    public class Weapon : MonoBehaviour
+    public class Weapon : NetworkBehaviour
 	{
 		// Тип оружия
 		public WeaponType type = WeaponType.Projectile;     // Какую систему вооружения следует использовать
@@ -211,6 +212,10 @@ namespace Builds
         // Используйте это для инициализации
         void Start()
 		{
+			if (!transform.parent.parent.GetComponent<NetworkIdentity>().isLocalPlayer)
+			{
+                this.GetComponent<Weapon>().enabled = false;
+            }
             // Рассчитайте фактическую КРЫШУ, которая будет использоваться в системах вооружения. Переменная скорострельности равна
             // разработанный для облегчения работы пользователя - он отображает количество выстрелов, которые необходимо произвести
             // в секунду. Здесь вычисляется фактическое десятичное значение ROF, которое можно использовать с таймерами.
@@ -623,7 +628,7 @@ namespace Builds
 					{
                         //вызовите функцию Apply Damage() в скрипте настройки вражеского персонажа
 
-                        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Limb"))
+                        if (hit.collider.gameObject.tag == "Player")
 						{
 							Vector3 directionShot = hit.collider.transform.position - transform.position;
 
@@ -798,6 +803,12 @@ namespace Builds
             // Воспроизведите звук выстрела
             GetComponent<AudioSource>().PlayOneShot(fireSound);
 		}
+
+        [Command]
+        private void cmdFire()
+        {
+            
+        }
 
         // Система метания снарядов
         public void Launch()
