@@ -156,8 +156,8 @@ namespace Builds
         private void ShowWinScreen()
         {
             _showWinScreen = true;
-            Time.timeScale = 0f;
             GetComponent<SetGunsIntoCamera>().DisableFireGun();
+            Time.timeScale = 0f;
         }
         //нашел герб - выиграл
         private void BunnerWin()
@@ -226,7 +226,7 @@ namespace Builds
             if (_showLossScreen)
             {
                 Loss();
-            }          
+            }
         }
         //метод поражения
         private void Loss()

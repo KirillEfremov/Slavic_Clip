@@ -17,8 +17,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Networking;
 using Mirror;
+using UnityEngine.UI;
 
 namespace Builds
 {
@@ -66,7 +66,7 @@ namespace Builds
 	}
 
     // Класс оружия сам управляет механикой оружия
-    public class Weapon : NetworkBehaviour
+    public class Weapon : MonoBehaviour
 	{
 		// Тип оружия
 		public WeaponType type = WeaponType.Projectile;     // Какую систему вооружения следует использовать
@@ -207,8 +207,26 @@ namespace Builds
 
         // Другое
         private bool canFire = true;                        // Может ли оружие в данный момент стрелять или нет (используется для полуавтоматического оружия)
+		/*
+        bool _rel = false;
+		[SerializeField]
+		private GameObject canvasObject;
+		[SerializeField]
+		private Slider sliderReload;
+		private float progress = 0f;
 
-
+        IEnumerator Rel()
+        {
+			yield return new WaitForSeconds(1.6f);
+			progress = 100;
+			_rel = false;
+        }
+        public void OnValueChanged (float value)
+		{
+			value = progress;
+			Rel();
+        }
+        */
         // Используйте это для инициализации
         void Start()
 		{
@@ -223,7 +241,6 @@ namespace Builds
 				actualROF = 1.0f / rateOfFire;
 			else
 				actualROF = 0.01f;
-
             // Инициализируйте текущую переменную размера перекрестия начальным значением, указанным пользователем
             currentCrosshairSize = startingCrosshairSize;
 
@@ -285,6 +302,14 @@ namespace Builds
         // Обновление вызывается один раз за кадр
         void Update()
 		{
+			/*
+			if (_rel)
+			{
+				canvasObject.SetActive(true);
+				StartCoroutine(Rel());
+			}
+			*/
+			//else canvasObject.SetActive(false);
 
             // Рассчитайте текущую точность для этого оружия
             currentAccuracy = Mathf.Lerp(currentAccuracy, accuracy, accuracyRecoverRate * Time.deltaTime);
@@ -803,13 +828,13 @@ namespace Builds
             // Воспроизведите звук выстрела
             GetComponent<AudioSource>().PlayOneShot(fireSound);
 		}
-
+		/*
         [Command]
         private void cmdFire()
         {
             
         }
-
+		*/
         // Система метания снарядов
         public void Launch()
 		{
@@ -1057,11 +1082,11 @@ namespace Builds
             SendMessageUpwards("OnEasyWeaponsStopBeaming", SendMessageOptions.DontRequireReceiver);
 		}
 
-
         // Перезарядите оружие
         void Reload()
 		{
-			currentAmmo = ammoCapacity;
+            //_rel = true;
+            currentAmmo = ammoCapacity;
 			fireTimer = -reloadTime;
 			GetComponent<AudioSource>().PlayOneShot(reloadSound);
 

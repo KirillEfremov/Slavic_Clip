@@ -38,7 +38,7 @@ namespace Builds
             if (_player1 = GameObject.Find("Player1"))
             {
                 if (_player2 = GameObject.Find("Player2"))
-               {
+                {
                     _timerStart -= Time.deltaTime;
                     _timerText.text = Mathf.Round(_timerStart).ToString();
                     if (_timerStart <= 0)
@@ -53,7 +53,7 @@ namespace Builds
                             _BG.SetActive(false);
                 }
             }
-        }        
+        }
         private void OnGUI()
         {
             if (_showLossScreen)
