@@ -1,3 +1,5 @@
+using Mirror;
+using System.Collections.Generic;
 using UnityEngine;
 namespace Builds
 {
@@ -5,18 +7,26 @@ namespace Builds
     {
         [SerializeField]
         private PlayerControl _weapons;
+        private List<string> players = new List<string>();
 
-        void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            if (collision.gameObject.tag == "Player")
+            if (other.gameObject.tag == "Player")
             {
-                _weapons = collision.gameObject.GetComponent<PlayerControl>();
-                DestroyMethod();
+                if (!players.Contains(other.gameObject.name))
+                {
+                    _weapons = other.gameObject.GetComponent<PlayerControl>();
+                    DestroyMethod(other.gameObject);
+                }
             }
         }       
-        public void DestroyMethod()
+        public void DestroyMethod(GameObject player)
         {
-            Destroy(transform.gameObject);
+            players.Add(player.name);
+            if (player.GetComponent<NetworkIdentity>().isLocalPlayer)
+            {
+                transform.GetChild(3).gameObject.SetActive(false);
+            }
             Debug.Log("Here it is the weapon of the Russian land, in your hands!");
             _weapons.Weapons += 1;
         }

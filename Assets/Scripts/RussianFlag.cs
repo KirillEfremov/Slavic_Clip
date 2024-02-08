@@ -13,11 +13,6 @@ namespace Builds
         [SerializeField]
         private AudioSource _buff;
 
-        private void Start()
-        {
-            _currentHealth = GetComponent<PlayerControl>();
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.tag == "Player")

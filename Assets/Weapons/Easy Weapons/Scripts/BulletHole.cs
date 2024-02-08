@@ -13,7 +13,7 @@ namespace Builds
 	{
 		public GameObject bulletHoleMesh;           // The GameObject that has the actual mesh
 		public bool usePooling = true;              // Whether or not the bullet hole will use the pooling system - if false, the bullet hole will be destroyed after lifetime
-		public float lifetime = 15.0f;              // The amount of time before the bullet hole disappears entirely
+		public float lifetime = 28.0f;              // The amount of time before the bullet hole disappears entirely
 		public float startFadeTime = 10.0f;         // The amount of time before the bullet hole starts to fade
 		private float timer;                        // A timer to keep track of how long this bullet has been in existence
 		public float fadeRate = 0.001f;             // The rate at which the bullet will fade out

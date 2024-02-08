@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 namespace Builds
@@ -7,6 +8,11 @@ namespace Builds
     [RequireComponent(typeof(PlayerMotor))]
     public class PlayerControl : NetworkBehaviour
     {
+        private Stats stats;
+        public GameObject endGameScreen;
+        public GameObject statsPrefab;
+        public Text name;
+        public Text score;
         public string _labelText = "Возьмите с землице русской шесть вещиц, чтобы супостатов бить или найдите символ величия государства православного, совершив, во Славу памяти места священного, славянский зажим ящерам перевоплотившимся!";
         private Animate _anim;
         public float _speed = 5f;
@@ -24,7 +30,7 @@ namespace Builds
         public bool _isPlayedWin = true;
         [SerializeField]
         private AudioSource _gameWin;
-        private int _weaponsCollected = 0;
+        public int _weaponsCollected = 0;
         private int _maxItems = 6;
         public GameObject _BG;
         [SerializeField]
@@ -33,6 +39,10 @@ namespace Builds
         public bool _showLossScreen = false;
         [SerializeField]
         private GameObject _player;
+        private string _text;
+        private bool _isTrig;
+        [SerializeField]
+        private AudioSource _buff;
 
         private void Start()
         {
@@ -41,9 +51,19 @@ namespace Builds
             _audioSource = GetComponent<AudioSource>();
             _currentHealth = _startingHealth;
             _player = GameObject.FindWithTag("Player");
+            stats = GameObject.FindGameObjectWithTag("Stats").GetComponent<Stats>();
             if (isLocalPlayer)
             {
                 _BG.SetActive(true);
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "RussianFlag")
+            {
+                _text = "Нажми клавишу F заморскую. Получишь силушку богатырскую!";
+                _isTrig = true;
             }
         }
 
@@ -54,37 +74,31 @@ namespace Builds
             {
                 _audioSource.PlayOneShot(_itemClip);
                 Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-                Weapons += 1;
             }
             if (collision.gameObject.name == "Shotgun")
             {
                 _audioSource.PlayOneShot(_itemClip);
                 Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-                Weapons += 1;
             }
             if (collision.gameObject.name == "Beam Gun")
             {
                 _audioSource.PlayOneShot(_itemClip);
                 Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-                Weapons += 1;
             }
             if (collision.gameObject.name == "M4")
             {
                 _audioSource.PlayOneShot(_itemClip);
                 Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-                Weapons += 1;
             }
             if (collision.gameObject.name == "Pistol")
             {
                 _audioSource.PlayOneShot(_itemClip);
                 Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-                Weapons += 1;
             }
             if (collision.gameObject.name == "Rocket Launcher")
             {
                 _audioSource.PlayOneShot(_itemClip);
                 Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-                Weapons += 1;
             }
         }
         private void Update()
@@ -122,6 +136,27 @@ namespace Builds
             #endregion
 
             LossFell();
+
+            if (isServer)
+            {
+                stats.stats.Clear();
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                for (int i = 0; i < players.Length; i++)
+                {
+                    PlayerStats playerStats = new PlayerStats();
+                    playerStats.name = players[i].name;
+                    playerStats.count = players[i].GetComponent<PlayerControl>()._weaponsCollected;
+                    stats.stats.Add(playerStats);
+                }
+            }
+
+            if (_isTrig)
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    CurrentHealth = 1000;
+                    _buff.Play();
+                    _isTrig = false;
+                }
         }
         //здоровье игрока
         public int CurrentHealth
@@ -201,6 +236,9 @@ namespace Builds
                 _gameWin.Play();
             }
             _isPlayedWin = false;
+            endGameScreen.SetActive(true);
+            name.text = stats.name.text;
+            score.text = stats.score.text;
             if (GUI.Button(new Rect(Screen.width / 2 - 250,
               Screen.height / 2 - 50, 400, 100), "СЛАВЬСЯ РУСЬ-МАТУШКА! МЫ ПОБЕДИЛИ!"))
             {
@@ -217,6 +255,8 @@ namespace Builds
                 if (_player.transform.position.y <= -120)
                 {
                     Time.timeScale = 0f;
+                    GetComponent<SetGunsIntoCamera>().DisableFireGun();
+                    endGameScreen.SetActive(true);
                 }
             }
         }
@@ -226,7 +266,7 @@ namespace Builds
             if (_showLossScreen)
             {
                 Loss();
-            }
+            }          
         }
         //метод поражения
         private void Loss()
@@ -238,6 +278,9 @@ namespace Builds
                 _gameOver.Play();
             }
             _labelText = "Бесконечно-вечное близко!";
+            endGameScreen.SetActive(true);
+            name.text = stats.name.text;
+            score.text = stats.score.text;
             if (GUI.Button(new Rect(Screen.width / 2 - 250,
             Screen.height / 2 - 50, 400, 100), "НУ КАК ЖЕ ТАК, БОГАТЫРЬ!"))
             {
@@ -266,6 +309,12 @@ namespace Builds
              Screen.height / 2 - 500, 150, 50), "Выход из игры"))
             {
                 Application.Quit();
+            }
+
+            if (_isTrig)
+            {
+                GUI.Label(new Rect(Screen.width / 2 - 125, Screen.height - 200,
+                300, 150), _text);
             }
         }
     }
