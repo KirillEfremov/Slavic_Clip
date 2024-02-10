@@ -15,8 +15,8 @@ public class Stats : NetworkBehaviour
 
     void Update()
     {
-        name.text = "Èãðîêè:\n";
-        score.text = "Ñ÷¸ò:\n";
+        name.text = "Ð˜Ð³Ñ€Ð¾ÐºÐ¸:\n";
+        score.text = "Ð¡Ñ‡Ñ‘Ñ‚:\n";
         foreach (PlayerStats playerStats in stats)
         {
             name.text += playerStats.name + "\n";

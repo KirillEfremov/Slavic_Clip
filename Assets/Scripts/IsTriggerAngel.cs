@@ -4,8 +4,7 @@ namespace Builds
 {
     public class IsTriggerAngel : MonoBehaviour
     {
-        [SerializeField]
-        private Collider _isTriggerAngel;
+        [SerializeField] private Collider _isTriggerAngel;
 
         void OnCollisionEnter(Collision collision)
         {

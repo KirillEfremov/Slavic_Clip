@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Builds
         private GameObject _currentGun;
         private int weaponIndex = 0;
 
+        public event Action<GunType> OnSwitchGun; 
         void Start()
         {
             SetActiveWeapon(weaponIndex);
@@ -25,6 +27,12 @@ namespace Builds
         {
             if (isLocalPlayer)
             {
+                if (other.gameObject.TryGetComponent<IWeapon>(out var type))
+                {
+                    OnSwitchGun?.Invoke(type.WeaponType);
+                }
+                
+                
                 if (other.gameObject.name == "Rail Gun")
                 {
                     _currentGun.SetActive(false);

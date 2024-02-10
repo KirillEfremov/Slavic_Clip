@@ -3,17 +3,12 @@ namespace Builds
 {
     public class BunnerBehaviour : MonoBehaviour
     {
-        [SerializeField]
-        private PlayerControl _bunnerCollected;
-
         void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.TryGetComponent<PlayerControl>(out var player))
             {
-                _bunnerCollected = collision.gameObject.GetComponent<PlayerControl>();
-                Destroy(this.transform.parent.gameObject);
-                Debug.Log("A sacred symbol has been found!");
-                _bunnerCollected.Bunner += 1;
+                player.Bunner += 1;
+                Destroy(transform.parent.gameObject);
             }
         }
     }

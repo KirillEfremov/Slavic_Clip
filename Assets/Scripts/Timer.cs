@@ -12,25 +12,25 @@ namespace Builds
         private float _timerStart = 300f;
         [SerializeField]
         private Text _timerText;
-        private PlayerControl _text;
+       // private PlayerControl _text;
         public GameObject _BG;
         public AudioSource _gameOver;
-        private PlayerControl _isPlayedWin;
-        private PlayerControl _showWinScreen;
-        [SerializeField]
-        private GameObject _player1;
-        [SerializeField]
-        private GameObject _player2;
+       // private PlayerControl _isPlayedWin;
+       // private PlayerControl _showWinScreen;
+       
         public GameObject endGameScreen;
+        
+        private PlayerControl _playerControl;
+        private SetGunsIntoCamera _gunsInto;
 
         private void Start()
         {
             _timerText.text = _timerStart.ToString();
-            _text = GetComponent<PlayerControl>();
-            _isPlayedWin = GetComponent<PlayerControl>();
-            _showWinScreen = GetComponent<PlayerControl>();
-            _player1 = GameObject.Find("Player1");
-            _player2 = GameObject.Find("Player2");
+            //_text = GetComponent<PlayerControl>();
+            _playerControl = GetComponent<PlayerControl>();
+            //_isPlayedWin = GetComponent<PlayerControl>();
+            //_showWinScreen = GetComponent<PlayerControl>();
+           
         }
 
         private void Update()
@@ -46,11 +46,11 @@ namespace Builds
                     _BG.SetActive(false);
                     Time.timeScale = 0f;
                     endGameScreen.SetActive(true);
-                    GetComponent<SetGunsIntoCamera>().DisableFireGun();
+                    _gunsInto.DisableFireGun();
                 }
 
-                if (_showWinScreen._showWinScreen == true)
-                    if (_isPlayedWin._isPlayedWin == false)
+                if (_playerControl._showWinScreen == true)
+                    if (_playerControl._isPlayedWin == false)
                         _BG.SetActive(false);
             }
         }        
@@ -62,7 +62,7 @@ namespace Builds
                 {
                     _gameOver.Play();
                 }
-                _text._labelText = "Пространство времени лопнуло!";
+                _playerControl.LabelText = "Пространство времени лопнуло!";
                 if (GUI.Button(new Rect(Screen.width / 2 - 250,
                 Screen.height / 2 - 50, 400, 100), "НУ КАК ЖЕ ТАК, БОГАТЫРЬ!"))
                 {

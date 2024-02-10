@@ -67,7 +67,7 @@ namespace Builds
 	}
 
     // Класс оружия сам управляет механикой оружия
-    public class Weapon : MonoBehaviour
+    public class Weapon : MonoBehaviour , IPickable
 	{
         private Slider reloadGunSlier;
 
@@ -209,12 +209,15 @@ namespace Builds
         public AudioClip dryFireSound;                      // Звук воспроизводится, когда пользователь пытается выстрелить, но у него заканчиваются патроны
 
         // Другое
-        private bool canFire = true;                        // Может ли оружие в данный момент стрелять или нет (используется для полуавтоматического оружия)
+        private bool canFire = true; // Может ли оружие в данный момент стрелять или нет (используется для полуавтоматического оружия)
+
+        private AudioSource _audioSource;
 
 
         // Используйте это для инициализации
         void Start()
-		{
+        {
+	        _audioSource = GetComponent<AudioSource>();
 			if (!transform.parent.parent.GetComponent<NetworkIdentity>().isLocalPlayer)
 			{
                 this.GetComponent<Weapon>().enabled = false;
@@ -1147,6 +1150,11 @@ namespace Builds
 
 			return hitMesh;
 		}
+
+        public void PlayOneShot(AudioClip clip)
+        {
+	        _audioSource.PlayOneShot(clip);
+        }
 	}
 }
 

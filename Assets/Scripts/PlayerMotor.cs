@@ -3,11 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : MonoBehaviour
 {
-    [SerializeField]
-    private Camera _cam;
     private Rigidbody _rb;
-    private Vector3 _velocity = Vector3.zero;
-    private Vector3 _rotation = Vector3.zero;
+    private Vector3 _velocity;
+    private Vector3 _rotation;
 
     private void Start()
     {
@@ -31,6 +29,6 @@ public class PlayerMotor : MonoBehaviour
     void PerfrormMove()
     {
         if (_velocity != Vector3.zero)
-        _rb.MovePosition(_rb.position + _velocity * Time.fixedDeltaTime);
+            _rb.MovePosition(_rb.position + _velocity * Time.fixedDeltaTime);
     }
 }

@@ -13,7 +13,7 @@ namespace Builds
         public GameObject statsPrefab;
         public Text name;
         public Text score;
-        public string _labelText = "¬озьмите с землице русской шесть вещиц, чтобы супостатов бить или найдите символ величи€ государства православного, совершив, во —лаву пам€ти места св€щенного, слав€нский зажим €щерам перевоплотившимс€!";
+        public string LabelText = "¬озьмите с землице русской шесть вещиц, чтобы супостатов бить или найдите символ величи€ государства православного, совершив, во —лаву пам€ти места св€щенного, слав€нский зажим €щерам перевоплотившимс€!";
         private Animate _anim;
         public float _speed = 5f;
         [SerializeField]
@@ -44,6 +44,8 @@ namespace Builds
         [SerializeField]
         private AudioSource _buff;
 
+        private static readonly int IsDeath = Animator.StringToHash("isDeath");
+
         private void Start()
         {
             _anim = GetComponent<Animate>();
@@ -70,37 +72,12 @@ namespace Builds
         //звуковой эффект при столкновении с оружием
         void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.name == "Rail Gun")
+            if (collision.gameObject.TryGetComponent<IPickable>(out var item))
             {
-                _audioSource.PlayOneShot(_itemClip);
-                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-            }
-            if (collision.gameObject.name == "Shotgun")
-            {
-                _audioSource.PlayOneShot(_itemClip);
-                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-            }
-            if (collision.gameObject.name == "Beam Gun")
-            {
-                _audioSource.PlayOneShot(_itemClip);
-                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-            }
-            if (collision.gameObject.name == "M4")
-            {
-                _audioSource.PlayOneShot(_itemClip);
-                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-            }
-            if (collision.gameObject.name == "Pistol")
-            {
-                _audioSource.PlayOneShot(_itemClip);
-                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
-            }
-            if (collision.gameObject.name == "Rocket Launcher")
-            {
-                _audioSource.PlayOneShot(_itemClip);
-                Debug.Log("Here it is the weapon of the Russian land, in your hands!");
+                item.PlayOneShot(_itemClip);
             }
         }
+        
         private void Update()
         {
             #region PlayerMove
@@ -200,7 +177,7 @@ namespace Builds
             Debug.LogFormat("The symbol is sacred:{0}", _bunnerCollected);
             if (_bunnerCollected >= _maxBunner)
             {
-                _labelText = "Ќайден символ св€щенный!";
+                LabelText = "Ќайден символ св€щенный!";
                 ShowWinScreen();
             }
         }
@@ -210,12 +187,12 @@ namespace Builds
             Debug.LogFormat("Weapons:{0}", _weaponsCollected);
             if (_weaponsCollected >= _maxItems)
             {
-                _labelText = "ќбладаешь теперь силушкой всех шести оружий огнестрельных!";
+                LabelText = "ќбладаешь теперь силушкой всех шести оружий огнестрельных!";
                 ShowWinScreen();
             }
             else
             {
-                _labelText = "Ќужно тебе еще оружи€ " +
+                LabelText = "Ќужно тебе еще оружи€ " +
                 (_maxItems - _weaponsCollected) + ". ¬перед, братец!";
             }
         }
@@ -271,13 +248,13 @@ namespace Builds
         //метод поражени€
         private void Loss()
         {
-            _anim._anim.SetBool("isDeath", true);
+            _anim._anim.SetBool(IsDeath, true);
             if (_isPlayedDie)
             {
                 _BG.SetActive(false);
                 _gameOver.Play();
             }
-            _labelText = "Ѕесконечно-вечное близко!";
+            LabelText = "Ѕесконечно-вечное близко!";
             endGameScreen.SetActive(true);
             name.text = stats.name.text;
             score.text = stats.score.text;
@@ -300,7 +277,7 @@ namespace Builds
             GUI.Box(new Rect(1350, 90, 250, 50),
             "ќружи€ противосупостатского: " + Weapons, myStyle);
             GUI.Label(new Rect(Screen.width / 2 - 125, Screen.height - 100,
-            300, 150), _labelText);
+            300, 150), LabelText);
 
             WinScreen();
             LossScreen();
